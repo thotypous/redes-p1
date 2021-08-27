@@ -1,0 +1,8 @@
+#!/bin/bash -xe
+GRADER_REPO=https://github.com/thotypous/redes-t1-grader
+if [[ -e grader ]]; then
+    (cd grader && git pull)
+else
+    git clone "$GRADER_REPO" grader
+fi
+exec grader/run

@@ -1,0 +1,13 @@
+name: CI Grader
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download and run grader
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [[ -e grader ]]; then echo "grader already exists" >&2; exit 1; fi
+          ./run-grader
