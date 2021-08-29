@@ -58,21 +58,21 @@ Algumas observações importantes:
 
  * Se um cliente fechar a conexão com o servidor, deve-se avisar todos os outros usuários que estejam em pelo menos um canal em comum com ele, enviando: `:apelido QUIT :Connection closed`
 
-
-## Cliente
-
-Existem duas formas recomendadas de testar o seu servidor:
-
- * Usando o [https://hexchat.github.io](HexChat). Após instalá-lo, adicione uma nova rede de IRC e insira nela o servidor `localhost/6667`.
-
- * Usando o netcat e construindo na mão os comandos do protocolo IRC, como definidos na seção anterior: `nc -C localhost 6667`.
-
-
 ## Servidor
 
 Implemente o seu servidor no arquivo `servidor`. Os exemplos que daremos são em Python, mas você pode usar a linguagem que quiser. Se você usar uma linguagem compilada, como C ou Rust, crie um shell script chamado `compilar` contendo os comandos necessários para compilar seu código. Se precisar de algum compilador que não estiver instalado no servidor, instale usando `sudo apt-get install pacotes` no seu script.
 
-Para testar seu código, execute `./run-grader`.
+Para executar os testes automatizados, use `./run-grader`. Nesse caso, não há necessidade de subir o seu servidor manualmente, pois os próprios testes se encarregarão de fazê-lo.
+
+## Cliente
+
+Para subir o servidor manualmente, permitindo que ele seja acessado por algum programa cliente, execute o comando `PYTHONPATH=grader ./servidor`. Antes de fazer isso, você precisa ter executado `./run-grader` alguma vez para que o diretório `grader` tenha sido baixado.
+
+Existem dois clientes recomendados para testar o seu servidor:
+
+ * [https://hexchat.github.io](HexChat): após instalá-lo, adicione uma nova rede de IRC e insira nela o servidor `localhost/6667`.
+
+ * netcat: execute `nc -C localhost 6667` para conectar e depois construa na mão os comandos do protocolo IRC, como definidos na seção anterior.
 
 ### Orientações importantes sobre o sistema de correção
 
