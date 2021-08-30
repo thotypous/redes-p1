@@ -9,7 +9,7 @@ O protocolo IRC é definido no documento https://tools.ietf.org/html/rfc2812. Vo
 Após dar uma visão geral do protocolo, este roteiro te guiará em passos para que você construa aos poucos a implementação que esperamos.
 
 
-### Visão do usuário
+## Visão do usuário
 
 O usuário escolhe um apelido (*nickname*) logo ao conectar. Caso o apelido já esteja em uso por outra pessoa, o servidor retorna uma mensagem de erro, situação na qual o cliente deve escolher outro apelido. O usuário é considerado como "registrado" no servidor apenas após escolher um apelido válido e único.
 
@@ -17,7 +17,7 @@ Uma vez "registrado", o usuário pode enviar mensagens privadas para outros usu�
 
 Um usuário só é notificado a respeito de mudanças de apelido ou da saída de outro usuário se estiver pelo menos em um canal em comum com ele.
 
-### Mensagens do protocolo
+## Mensagens do protocolo
 
 As mensagens trocadas pelo protocolo são sempre de uma única linha terminada por `'\r\n'`. O seu servidor deve ser capaz de interpretar os seguintes tipos de mensagem:
 
@@ -74,7 +74,7 @@ Existem dois clientes recomendados para testar o seu servidor:
 
  * netcat: execute `nc -C localhost 6667` para conectar e depois construa na mão os comandos do protocolo IRC, como definidos na seção anterior.
 
-### Orientações importantes sobre o sistema de correção
+## Orientações importantes sobre o sistema de correção
 
  1. Nunca modifique o arquivo `run-grader` nem o conteúdo do diretório `.github`, caso contrário seu trabalho será invalidado.
 
@@ -84,7 +84,7 @@ Existem dois clientes recomendados para testar o seu servidor:
 
  4. Toda vez que você executar `run-grader`, ele vai checar se existem atualizações do `grader` no repositório do professor. Se houver conflitos de arquivo com modificações que você tenha feito, recomendo que você apague o diretório `grader` e tente executar novamente. Caso contrário, você vai precisar resolver os conflitos de edição por conta própria.
 
-### Passo 1
+## Passo 1
 
 Você recebeu um arquivo de exemplo chamado `servidor` que escuta na porta 6667 e mostra na saída todas as conexões estabelecidas, dados recebidos e conexões fechadas.
 
@@ -92,7 +92,7 @@ Estude o código contido no arquivo [tcp.py](https://github.com/thotypous/redes-
 
 Complete o código do servidor para tratar mensagens do tipo `PING` recebidas do cliente e respondê-las corretamente.
 
-### Passo 2
+## Passo 2
 
 Um erro muito comum de pessoas que estão começando a trabalhar com *sockets* é acreditar que uma mensagem sempre vai ser transportada de uma só vez de uma ponta até a outra. Essa situação ideal pode até persistir enquanto você estiver testando seu programa localmente, mas quando ele estiver funcionando em uma rede real, duas situações eventualmente acontecerão:
 
@@ -106,17 +106,17 @@ Adapte seu servidor para tratar situações similares às descritas acima. Você
 
 Por enquanto, continuaremos enviando apenas mensagens do tipo `PING`, mas tente deixar seu código organizado para implementar o tratamento de novos tipos de mensagem, que serão necessárias nos passos seguintes.
 
-### Passo 3
+## Passo 3
 
 Trate mensagens do tipo `NICK`. Verifique se o apelido solicitado é válido usando a função `validar_nome`. Se for inválido, responda com a mensagem de erro 432 (como descrita na seção [Mensagens do protocolo](#mensagens-do-protocolo)). Senão, responda com as mensagens 001 e 422, para indicar sucesso.
 
-### Passo 4
+## Passo 4
 
 Adicione alguma estrutura de dados (por exemplo, um dicionário) para mapear cada apelido para a conexão correspondente. Quando um usuário pedir para definir um apelido, verifique se esse apelido já está em uso. Se estiver em uso, responda com a mensagem de erro 433 (vide seção [Mensagens do protocolo](#mensagens-do-protocolo)). Implemente também o suporte a trocar de apelido após definido um apelido inicial.
 
 Não esqueça que devemos ignorar maiúsculas / minúsculas quando tratamos apelidos ou nomes de canais. Assim, `ApElido` deve ser considerado duplicado se alguém já estiver usando `apelido`.
 
-### Passo 5
+## Passo 5
 
 Implemente suporte a troca de mensagens entre usuários usando `PRIVMSG`.
 
@@ -124,7 +124,7 @@ O seu código só vai passar no teste se você estiver acompanhando corretamente
 
 Ignore mensagens enviadas para apelidos que não existem ou que não estão mais em uso.
 
-### Passo 6
+## Passo 6
 
 Implemente o suporte a entrar em canais com `JOIN` e a enviar mensagens para esses canais usando `PRIVMSG`.
 
@@ -132,20 +132,20 @@ Por enquanto, você não precisa enviar a lista de membros do canal (mensagens 3
 
 Não esqueça que devemos ignorar maiúsculas / minúsculas quando tratamos apelidos ou nomes de canais. Assim, `#cAnaL` deve ser considerado a mesma coisa que `#canal`.
 
-### Passo 7
+## Passo 7
 
 Implemente o suporte a sair de canais com `PART`.
 
-### Passo 8
+## Passo 8
 
 Quando uma conexão fechar, envie mensagens do tipo `QUIT` para todos os usuários que estiverem em pelo menos um canal em comum com o usuário que fechou a conexão.
 
 Você pode implementar essa funcionalidade na função `sair` do código de exemplo.
 
-### Passo 9
+## Passo 9
 
 Passe a enviar a lista dos membros de um canal (mensagens 353 e 366) quando alguém entrar no canal (`JOIN`).
 
-### Passo 10
+## Passo 10
 
 Certifique-se que, quando um usuário fecha a conexão, você está retirando o nome dele da lista de membros dos canais dos quais ele fazia parte.
