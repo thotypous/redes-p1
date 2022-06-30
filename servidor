@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
 import asyncio
 from tcp import Servidor
 import re
 
+conexao.dados_residuais = b''
 
 def validar_nome(nome):
     return re.match(br'^[a-zA-Z][a-zA-Z0-9_-]*$', nome) is not None
@@ -16,8 +16,17 @@ def sair(conexao):
 def dados_recebidos(conexao, dados):
     if dados == b'':
         return sair(conexao)
-    print(conexao, dados)
-
+    if not dados.endswith(b'\n'):
+        conexao.dados_residuais = conexao.dados_residuais + dados + b' '
+    else:
+        if conexao.dados_residuais != b'':
+            conexao.dados_residuais = conexao.dados_residuais + ' ' + dados
+            dados = conexao.dados_residuais
+        if dados.startswith(b'PING'):
+            conexao.enviar(b':server PONG server :' + dados.split(b' ', 1)[1])
+    
+        print(conexao, dados)
+        conexao.dados_residuais = b''
 
 def conexao_aceita(conexao):
     print(conexao, 'nova conexão')
