@@ -70,7 +70,7 @@ Para subir o servidor manualmente, permitindo que ele seja acessado por algum pr
 
 Existem dois clientes recomendados para testar o seu servidor:
 
- * [https://hexchat.github.io](HexChat): após instalá-lo, adicione uma nova rede de IRC e insira nela o servidor `localhost/6667`.
+ * [HexChat](https://hexchat.github.io): após instalá-lo, adicione uma nova rede de IRC e insira nela o servidor `localhost/6667`.
 
  * netcat: execute `nc -C localhost 6667` para conectar e depois construa na mão os comandos do protocolo IRC, como definidos na seção anterior.
 
