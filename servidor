@@ -21,6 +21,15 @@ def dados_recebidos(conexao, dados):
 
 def conexao_aceita(conexao):
     print(conexao, 'nova conexão')
+
+    # Note que, no Python, atributos NÃO precisam ser previamente declarados na classe!
+    # Se precisar, esta função é o melhor local para adicionar novos atributos ao objeto conexao.
+    #
+    # Por exemplo, para armazenar o nick do usuário:
+    conexao.nick = b'*'
+
+    # Fique à vontade para adicionar mais atributos, se necessário.
+
     conexao.registrar_recebedor(dados_recebidos)
 
 

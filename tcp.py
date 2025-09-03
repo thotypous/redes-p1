@@ -1,3 +1,5 @@
+# JAMAIS MODIFIQUE O CONTEÚDO DESTE ARQUIVO
+
 import socket
 import asyncio
 
@@ -25,4 +27,3 @@ class Conexao:
     def fechar(self):
         asyncio.get_event_loop().remove_reader(self.s)
         self.s.close()
-

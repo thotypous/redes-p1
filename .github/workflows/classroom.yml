@@ -1,0 +1,143 @@
+name: Autograding Tests
+on:
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Adjust permissions
+        run: chmod +x servidor
+      # Para cada teste, sobe o servidor, executa o teste, e mata o servidor
+      - name: Teste 1 - test_ping
+        id: test1
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: test_ping
+          setup-command: ./servidor & echo $! > servidor.pid; sleep 0.2
+          command: python3 -m unittest tests.test_ping
+          timeout: 10
+          max-score: 1
+      - name: Kill servidor (após Teste 1)
+        run: kill $(cat servidor.pid) || true; sleep 0.2; fuser -k 6667/tcp || true
+      - name: Teste 2 - test_ping_fragmented
+        id: test2
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: test_ping_fragmented
+          setup-command: ./servidor & echo $! > servidor.pid; sleep 0.2
+          command: python3 -m unittest tests.test_ping_fragmented
+          timeout: 10
+          max-score: 1
+      - name: Kill servidor (após Teste 2)
+        run: kill $(cat servidor.pid) || true; sleep 0.2; fuser -k 6667/tcp || true
+      - name: Teste 3 - test_nick_validation
+        id: test3
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: test_nick_validation
+          setup-command: ./servidor & echo $! > servidor.pid; sleep 0.2
+          command: python3 -m unittest tests.test_nick_validation
+          timeout: 10
+          max-score: 1
+      - name: Kill servidor (após Teste 3)
+        run: kill $(cat servidor.pid) || true; sleep 0.2; fuser -k 6667/tcp || true
+      - name: Teste 4 - test_nick_duplicate
+        id: test4
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: test_nick_duplicate
+          setup-command: ./servidor & echo $! > servidor.pid; sleep 0.2
+          command: python3 -m unittest tests.test_nick_duplicate
+          timeout: 10
+          max-score: 1
+      - name: Kill servidor (após Teste 4)
+        run: kill $(cat servidor.pid) || true; sleep 0.2; fuser -k 6667/tcp || true
+      - name: Teste 5 - test_privmsg
+        id: test5
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: test_privmsg
+          setup-command: ./servidor & echo $! > servidor.pid; sleep 0.2
+          command: python3 -m unittest tests.test_privmsg
+          timeout: 10
+          max-score: 1
+      - name: Kill servidor (após Teste 5)
+        run: kill $(cat servidor.pid) || true; sleep 0.2; fuser -k 6667/tcp || true
+      - name: Teste 6 - test_join
+        id: test6
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: test_join
+          setup-command: ./servidor & echo $! > servidor.pid; sleep 0.2
+          command: python3 -m unittest tests.test_join
+          timeout: 10
+          max-score: 1
+      - name: Kill servidor (após Teste 6)
+        run: kill $(cat servidor.pid) || true; sleep 0.2; fuser -k 6667/tcp || true
+      - name: Teste 7 - test_part
+        id: test7
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: test_part
+          setup-command: ./servidor & echo $! > servidor.pid; sleep 0.2
+          command: python3 -m unittest tests.test_part
+          timeout: 10
+          max-score: 1
+      - name: Kill servidor (após Teste 7)
+        run: kill $(cat servidor.pid) || true; sleep 0.2; fuser -k 6667/tcp || true
+      - name: Teste 8 - test_quit
+        id: test8
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: test_quit
+          setup-command: ./servidor & echo $! > servidor.pid; sleep 0.2
+          command: python3 -m unittest tests.test_quit
+          timeout: 10
+          max-score: 1
+      - name: Kill servidor (após Teste 8)
+        run: kill $(cat servidor.pid) || true; sleep 0.2; fuser -k 6667/tcp || true
+      - name: Teste 9 - test_names
+        id: test9
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: test_names
+          setup-command: ./servidor & echo $! > servidor.pid; sleep 0.2
+          command: python3 -m unittest tests.test_names
+          timeout: 10
+          max-score: 1
+      - name: Kill servidor (após Teste 9)
+        run: kill $(cat servidor.pid) || true; sleep 0.2; fuser -k 6667/tcp || true
+      - name: Teste 10 - test_disconnect
+        id: test10
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: test_disconnect
+          setup-command: ./servidor & echo $! > servidor.pid; sleep 0.2
+          command: python3 -m unittest tests.test_disconnect
+          timeout: 10
+          max-score: 1
+      - name: Kill servidor (após Teste 10)
+        run: kill $(cat servidor.pid) || true; sleep 0.2; fuser -k 6667/tcp || true
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          TEST1_RESULTS: "${{steps.test1.outputs.result}}"
+          TEST2_RESULTS: "${{steps.test2.outputs.result}}"
+          TEST3_RESULTS: "${{steps.test3.outputs.result}}"
+          TEST4_RESULTS: "${{steps.test4.outputs.result}}"
+          TEST5_RESULTS: "${{steps.test5.outputs.result}}"
+          TEST6_RESULTS: "${{steps.test6.outputs.result}}"
+          TEST7_RESULTS: "${{steps.test7.outputs.result}}"
+          TEST8_RESULTS: "${{steps.test8.outputs.result}}"
+          TEST9_RESULTS: "${{steps.test9.outputs.result}}"
+          TEST10_RESULTS: "${{steps.test10.outputs.result}}"
+        with:
+          runners: test1,test2,test3,test4,test5,test6,test7,test8,test9,test10
